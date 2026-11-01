@@ -409,7 +409,58 @@ def _(OUT_DIR, lim_raw):
 def _(mo):
     mo.md(r"""
     **Result:** 257 761 rows (package × month) from 77 files, 2020-03 to 2026-07,
-    saved as `data/sl_limitations.parquet`.
+    between 2 308 and 4 216 limited packages per month and 3 297 distinct texts.
+    Every row links to the main panel via `ref_date` and `rec_id`, where all of
+    them are flagged as limited. Only one limited package-month in the panel has
+    no text (Jentadueto, 2021-12). The columns `pack_size` and `pharmacode` are
+    empty in all files.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # SL data – findings for the presentation
+
+    ## Main panel (`sl_panel.parquet`, Part A)
+    - 282 monthly files, 2003-01 to 2026-07; 2003-03 missing (no file exists)
+    - 2 493 907 rows (package × month), 6 328 – 10 317 packages per month
+    - 30 columns, all prices numeric (0 conversion errors)
+
+    ## Limitation texts (`sl_limitations.parquet`, Part B)
+    - Sheet `Limitationen` exists continuously from **2020-03** (77 files), once in 2010-10 (dropped)
+    - 257 761 rows, 2 308 – 4 216 limited packages per month, 3 297 distinct texts
+    - One row per package; full text in one cell
+    - Every text links to the panel (all flagged `Y`); only 1 limited package-month without text
+      (Jentadueto, 2021-12) → empty flag = "not limited" confirmed
+
+    ## Key: Rec-ID (not Swissmedic number)
+    - Rec-ID unique per month, never missing
+    - Swissmedic number: 7× missing, shared by partial and full packs (Teilpackungen)
+    - GTIN: missing for partial packs
+    - Rec-ID stable over time: only 2 of 5 213 change Swissmedic no., both same product
+      with new pack code (Dialvit 2021-08, Conbriza 2020-08)
+
+    ## Technical challenges
+    - Two file naming schemes, separators `-`/`_`, one lower-case file renamed manually (2008-12)
+    - Invalid date in a file name (`Publications_20170931.xls`)
+    - Several releases per month → only first of month kept
+    - Mixed .xls/.xlsx → `calamine` engine (header reading took > 6 min before)
+    - Price date in column names → 591 header variants, 33 after normalisation
+    - Renamed columns: BSV→BAG dossier (2004), IKS→Swissmedic (2004), punctuation changes
+    - Co-payment rate in column name: 20 % → 40 % from 2024-01
+    - Sheet names contain dates (`SLMonthly_01_02_2003`) → normalised to find sheet types
+    - Columns present but empty: `pharmacode` (2015+), `price_model` (until 2020),
+      `atc` (sporadic until 2016), `lim_points` (mostly empty from 2009), `pack_size`
+    - Leading zeros lost in some Swissmedic numbers (Excel number cells)
+    - Environment: wrong Python (3.9), `uv sync` removed packages, ArrowKeyError on export
+
+    ## Differences to the preliminary study – update in presentation
+    - Texts available from **2020-03 (77 releases)**, not 2021-01 (67)
+    - Link via **Rec-ID**, not Swissmedic number
+    - 2.49 M package-months (study: 2.48 M)
+    - 33 header names after normalisation (study: "about 19 variants")
     """)
     return
 
