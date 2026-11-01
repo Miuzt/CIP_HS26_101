@@ -34,8 +34,7 @@ answer four research questions on data integration, generics, prices and supplie
 
 ## Setup and run
 
-Python 3.14, packages managed with [uv](https://docs.astral.sh/uv/) (`pyproject.toml`, `uv.lock`).
-The notebooks are [marimo](https://marimo.io) notebooks stored as `.py` files. Google Chrome is required for step 1.
+Python 3.14, packages managed with uv (pyproject.toml, uv.lock). Google Chrome is required for step 1.
 
 ```bash
 uv sync
