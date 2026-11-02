@@ -11,7 +11,7 @@ answer four research questions on data integration, generics, prices and supplie
 
 | Step | File | Input → Output |
 |---|---|---|
-| 1–2 Scraping & download | `data_scraping.py` | FOPH archive page → `data/raw/zips/SL_YYYY.zip`, URL list (CSV/JSON), download log with SHA-256 |
+| 1–2 Scraping & download | `data_scraping.py` | FFOPH archive page → `data/raw/zips/SL_YYYY.zip`, `data/meta/sl_zip_urls.csv`/`.json`, `data/meta/download_log.csv` (size, SHA-256) |
 | 3 Unzip & inventory | `data_unzip.py` | yearly ZIPs → `data/raw/extracted/YYYY/`, `data/meta/file_inventory.csv`, `data/meta/monthly_selection.csv` |
 | 4 Import & harmonisation | `processing.py` | monthly Excel releases → `data/sl_panel.parquet`, `data/import_log.csv` |
 | 4b Limitation texts (extension) | `processing_limitation.py` | limitation sheet of the monthly releases → `data/sl_limitations.parquet` (see below) |
